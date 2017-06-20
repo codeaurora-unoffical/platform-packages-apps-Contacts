@@ -140,15 +140,18 @@ public class MultiPickContactsActivity extends Activity implements
         if (RequestPermissionsActivity.startPermissionActivityIfNeeded(this)) {
             return;
         }
-
         setContentView(R.layout.multi_pick_activity);
         mChoiceSet = new Bundle();
         mContext = getApplicationContext();
-        mContactsFragment = new ContactsFragment();
-        mContactsFragment.setCheckListListener(this);
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.pick_layout, mContactsFragment);
+        mContactsFragment = (ContactsFragment) fragmentManager
+                .findFragmentByTag("tab-contacts");
+        if (mContactsFragment == null) {
+            mContactsFragment = new ContactsFragment();
+            transaction.add(R.id.pick_layout, mContactsFragment, "tab-contacts");
+        }
+        mContactsFragment.setCheckListListener(this);
         transaction.commitAllowingStateLoss();
         mActionBar = getActionBar();
         mActionBar.setDisplayShowHomeEnabled(true);
@@ -582,7 +585,6 @@ public class MultiPickContactsActivity extends Activity implements
             // in case export is stopped, record the count of inserted
             // successfully
             int insertCount = 0;
-            Cursor cr = null;
             freeSimCount = ContactUtils.getSimFreeCount(mContext, slot);
             boolean canSaveAnr = ContactUtils.canSaveAnr(mContext, slot);
             boolean canSaveEmail = ContactUtils.canSaveEmail(mContext, slot);
@@ -595,7 +597,6 @@ public class MultiPickContactsActivity extends Activity implements
             int emptyNumber = freeSimCount + emptyAnr;
 
             Log.d(TAG, "freeSimCount = " + freeSimCount);
-            String emails = null;
             Bundle choiceSet = (Bundle) mChoiceSet.clone();
             Set<String> set = choiceSet.keySet();
             Iterator<String> i = set.iterator();
@@ -726,7 +727,6 @@ public class MultiPickContactsActivity extends Activity implements
                                             new String[] { name, num,
                                                     email.toString() }));
 
-                            continue;
                         } else {
                             if (DEBUG) {
                                 Log.d(TAG, "Exported contact [" + name + ", "

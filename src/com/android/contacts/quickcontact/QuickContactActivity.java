@@ -2664,10 +2664,15 @@ public class QuickContactActivity extends ContactsActivity {
                                     getSystemService(SHORTCUT_SERVICE);
                             final DynamicShortcuts shortcuts =
                                     new DynamicShortcuts(QuickContactActivity.this);
+                            Account account = null;
+                            if (mContactData.getAccountName() != null) {
+                                account = new Account(mContactData.getAccountName(),
+                                        mContactData.getAccountType());
+                            }
                             shortcutManager.requestPinShortcut(
                                     shortcuts.getQuickContactShortcutInfo(
                                             mContactData.getId(), mContactData.getLookupKey(),
-                                            mContactData.getDisplayName()), null);
+                                            mContactData.getDisplayName(), account), null);
                         } else {
                             // Broadcast the shortcutIntent to the launcher to create a
                             // shortcut to this contact
@@ -3130,8 +3135,12 @@ public class QuickContactActivity extends ContactsActivity {
 
                     //empty number is equals to the sum of adn and anr
                     int emptyNumTotal = totalEmptyAdn + totalEmptyAnr;
-
-                    String strName = mContactData.getDisplayName();
+                    int nameSource = mContactData.getDisplayNameSource();
+                    String strName = "";
+                    if (nameSource == DisplayNameSources.STRUCTURED_NAME
+                            || nameSource == DisplayNameSources.NICKNAME
+                            || nameSource == DisplayNameSources.STRUCTURED_PHONETIC_NAME)
+                    strName = mContactData.getDisplayName();
 
                     ArrayList<String> arrayNumber = new ArrayList<String>();
                     ArrayList<String> arrayEmail = new ArrayList<String>();
