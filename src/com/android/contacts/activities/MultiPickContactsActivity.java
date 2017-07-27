@@ -140,15 +140,18 @@ public class MultiPickContactsActivity extends Activity implements
         if (RequestPermissionsActivity.startPermissionActivityIfNeeded(this)) {
             return;
         }
-
         setContentView(R.layout.multi_pick_activity);
         mChoiceSet = new Bundle();
         mContext = getApplicationContext();
-        mContactsFragment = new ContactsFragment();
-        mContactsFragment.setCheckListListener(this);
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.pick_layout, mContactsFragment);
+        mContactsFragment = (ContactsFragment) fragmentManager
+                .findFragmentByTag("tab-contacts");
+        if (mContactsFragment == null) {
+            mContactsFragment = new ContactsFragment();
+            transaction.add(R.id.pick_layout, mContactsFragment, "tab-contacts");
+        }
+        mContactsFragment.setCheckListListener(this);
         transaction.commitAllowingStateLoss();
         mActionBar = getActionBar();
         mActionBar.setDisplayShowHomeEnabled(true);
@@ -611,34 +614,37 @@ public class MultiPickContactsActivity extends Activity implements
                         Contacts.Data.MIMETYPE, Contacts.Data.DATA1, };
                 Cursor c = mContext.getContentResolver().query(dataUri,
                         projection, null, null, null);
-
-                if (c != null && c.moveToFirst()) {
-                    do {
-                        String mimeType = c.getString(1);
-                        if (StructuredName.CONTENT_ITEM_TYPE.equals(mimeType)) {
-                            name = c.getString(2);
-                        }
-                        if (Phone.CONTENT_ITEM_TYPE.equals(mimeType)) {
-                            String number = c.getString(2);
-                            if (!TextUtils.isEmpty(number) && emptyNumber-- > 0) {
-                                arrayNumber.add(number);
+                try {
+                    if (c != null && c.moveToFirst()) {
+                        do {
+                            String mimeType = c.getString(1);
+                            if (StructuredName.CONTENT_ITEM_TYPE
+                                    .equals(mimeType)) {
+                                name = c.getString(2);
                             }
-                        }
-                        if (canSaveEmail) {
-                            if (Email.CONTENT_ITEM_TYPE.equals(mimeType)) {
-                                String email = c.getString(2);
-                                if (!TextUtils.isEmpty(email)
-                                        && emptyEmail-- > 0) {
-                                    arrayEmail.add(email);
+                            if (Phone.CONTENT_ITEM_TYPE.equals(mimeType)) {
+                                String number = c.getString(2);
+                                if (!TextUtils.isEmpty(number)
+                                        && emptyNumber-- > 0) {
+                                    arrayNumber.add(number);
                                 }
                             }
-                        }
-                    } while (c.moveToNext());
+                            if (canSaveEmail) {
+                                if (Email.CONTENT_ITEM_TYPE.equals(mimeType)) {
+                                    String email = c.getString(2);
+                                    if (!TextUtils.isEmpty(email)
+                                            && emptyEmail-- > 0) {
+                                        arrayEmail.add(email);
+                                    }
+                                }
+                            }
+                        } while (c.moveToNext());
+                    }
+                } finally {
+                    if (c != null) {
+                        c.close();
+                    }
                 }
-                if (c != null) {
-                    c.close();
-                }
-
                 if (freeSimCount > 0 && 0 == arrayNumber.size()
                         && 0 == arrayEmail.size()) {
                     mToastHandler.sendMessage(mToastHandler.obtainMessage(
