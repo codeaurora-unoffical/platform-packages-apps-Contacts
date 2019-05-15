@@ -31,7 +31,7 @@
     <!-- When QC is uncollapsed, the title has this much margin on its bottom -->
     <dimen name="quickcontact_title_initial_bottom_margin">8dp</dimen>
     <!-- The ratio of width:height for the contact's photo in landscape -->
-    <item name="quickcontact_landscape_photo_ratio" type="dimen" format="float">0.7</item>
+    <item name="quickcontact_landscape_photo_ratio" type="dimen" format="float">0.4</item>
     <!-- How far QuickContacts can be dragged and released from the top of the window before we dismiss it. -->
     <dimen name="quickcontact_dismiss_distance_on_release">40dp</dimen>
     <!-- How far QuickContacts can be dragged from the top of the window before we dismiss it. -->
