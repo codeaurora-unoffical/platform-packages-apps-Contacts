@@ -353,7 +353,7 @@
     <string name="chat_gtalk" msgid="2927882858741904064">"Google Talk चा वापर करून चॅट करा"</string>
     <string name="chat_icq" msgid="4289041376069626281">"ICQ चा वापर करून चॅट करा"</string>
     <string name="chat_jabber" msgid="1097960594943864847">"Jabber चा वापर करून चॅट करा"</string>
-    <string name="chat" msgid="8390862712584830532">"चॅट करा"</string>
+    <string name="chat" msgid="8390862712584830532">"Chat"</string>
     <string name="description_minus_button" msgid="1305985971158054217">"हटवा"</string>
     <string name="expand_name_fields_description" msgid="6059558159338959487">"अधिक नाव फील्ड दर्शवा"</string>
     <string name="collapse_name_fields_description" msgid="7950435675716414477">"नाव फील्ड संकुचित करा"</string>
@@ -435,7 +435,7 @@
     <string name="editor_options_hide_phonetic_names_if_empty" msgid="2693314301550366143">"रिक्त असल्यास लपवा"</string>
     <string name="display_options_sort_by_given_name" msgid="893781924536349248">"नाव"</string>
     <string name="display_options_sort_by_family_name" msgid="1282763552330910876">"आडनाव"</string>
-    <string name="display_options_view_names_as" msgid="4060686468465916565">"नाव स्वरूपन"</string>
+    <string name="display_options_view_names_as" msgid="4060686468465916565">"नाव फॉरमॅट"</string>
     <string name="display_options_view_given_name_first" msgid="383885125505521383">"नाव प्रथम"</string>
     <string name="display_options_view_family_name_first" msgid="6597077054231296007">"आडनाव प्रथम"</string>
     <string name="settings_accounts" msgid="119582613811929994">"खाती"</string>
